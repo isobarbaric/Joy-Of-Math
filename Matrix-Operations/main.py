@@ -1,10 +1,11 @@
 
 import numpy as np
 
+# note scalars are not supported 
 class Matrix:
 
     def __init__(self, grid):
-        self.grid = grid
+        self.grid = np.array(grid)
         self.T = Matrix.transpose(grid)
 
     def transpose(grid):
@@ -15,39 +16,61 @@ class Matrix:
                 transposed[-1].append(grid[row][col])
         return transposed
 
-    # only matrices for these
-    def dot(x, y):
+    def __dot__(x, y):
         assert len(x) == len(y)
         result = 0
         for i in range(len(x)):
             result += x[i]*y[i]
         return result
     
-    # rn, works for Matrix + Matrix, not overloaded yet for scalars 
-    def __add__(x, y):
-        # check rows first and then check cols next
-        if not (len(x.grid) == len(y.grid) and len(x.grid[0]) == len(y.grid[0])):
+    def __add__(self, x):
+        if not (len(self.grid) == len(x.grid) and len(self.grid[0]) == len(x.grid[0])):
             return None
         resultant = []
-        for row in range(len(x.grid)):
+        for row in range(len(self.grid)):
             resultant.append([])
-            for col in range(len(x.grid[0])):
-                resultant[-1].append(x.grid[row][col] + y.grid[row][col])
+            for col in range(len(self.grid[0])):
+                resultant[-1].append(self.grid[row][col] + x.grid[row][col])
         return resultant
 
-    def __mul__(x, y):
-        if not ():
-            return None
+    def __mul__(self, x):
+        resultant = []
+        for row in self.grid:
+            resultant.append([])
+            for col in x.T:
+                resultant[-1].append(Matrix.__dot__(row, col))
+        return resultant
 
-    # subtraction needs multiplication to work properly
-    # def __subr__(x, y):
-
+    def __subr__(self, x):
+        # can get rid of this method when scalars are supported globally
+        def multiplyNegative():
+            for row in x:
+                for elem in row:
+                    elem *= -1
+        return self.__add__(multiplyNegative(x))
 
 # tranposed matrix
 # a = Matrix([[2, 5], [4, 3]])
 # print(a.T)
 # b = np.array([[2, 5], [4, 3]])
 # print(b.T)
+
+c = Matrix([[0, 5],[-3, 1],[-5, 1]])
+d = Matrix([[-4, 4],[-2, -4]])
+print(c * d)
+
+e = np.array([
+    [0, 5],
+    [-3, 1],
+    [-5, 1]
+])
+
+f = np.array([
+    [-4, 4],
+    [-2, -4]
+])
+
+print(e @ f)
 
 # matrix addition
 # a = Matrix([[3, 4], [-3, 2]])
