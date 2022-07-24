@@ -1,7 +1,9 @@
 
 import numpy as np
 
-# note scalars are not supported 
+# note scalars are not supported
+
+
 class Matrix:
 
     def __init__(self, grid):
@@ -22,7 +24,7 @@ class Matrix:
         for i in range(len(x)):
             result += x[i]*y[i]
         return result
-    
+
     def __add__(self, x):
         if not (len(self.grid) == len(x.grid) and len(self.grid[0]) == len(x.grid[0])):
             return None
@@ -48,35 +50,3 @@ class Matrix:
                 for elem in row:
                     elem *= -1
         return self.__add__(multiplyNegative(x))
-
-# tranposed matrix
-# a = Matrix([[2, 5], [4, 3]])
-# print(a.T)
-# b = np.array([[2, 5], [4, 3]])
-# print(b.T)
-
-c = Matrix([[0, 5],[-3, 1],[-5, 1]])
-d = Matrix([[-4, 4],[-2, -4]])
-print(c * d)
-
-e = np.array([
-    [0, 5],
-    [-3, 1],
-    [-5, 1]
-])
-
-f = np.array([
-    [-4, 4],
-    [-2, -4]
-])
-
-print(e @ f)
-
-# matrix addition
-# a = Matrix([[3, 4], [-3, 2]])
-# b = Matrix([[-2, 9], [5, 2]])
-# print(a + b)
-
-# next steps: 
-# - add scalar support for __add__ and __mul__, then implement __sub__
-# - look up dot product and cross product for matrices
